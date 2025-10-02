@@ -28,12 +28,10 @@ def stream_regex_matches_over_sequence_chunks(chunks: Iterable[str], pattern: st
         
         for m in regex.finditer(window):
             abs_pos = offset + m.start()
-            # Only yield if this match hasn't been reported yet
             if abs_pos >= last_match_end:
                 yield abs_pos, m.group(0)
                 last_match_end = abs_pos + len(m.group(0))
         
-        # prepare buffer for next chunk
         if overlap > 0 and len(window) > overlap:
             buffer = window[-overlap:]
             offset += len(window) - overlap

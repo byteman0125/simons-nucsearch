@@ -26,18 +26,15 @@ def parse_sequence_from_efetch_xml(xml_text: str) -> str:
 
     seq = ''
     if root is not None:
-        # Try TSeq format
         tseq_seq = root.find('.//TSeq/TSeq_sequence')
         if tseq_seq is not None and (tseq_seq.text or '').strip():
             seq = tseq_seq.text.strip()
         else:
-            # Try INSDSeq format
             insd_seq = root.find('.//INSDSeq/INSDSeq_sequence')
             if insd_seq is not None and (insd_seq.text or '').strip():
                 seq = insd_seq.text.strip()
 
     if not seq:
-        # Fallback: extract the longest plausible DNA sequence block from the XML text
         m = max(re.findall(r'[ACGTNacgtn]+', xml_text), key=len, default='')
         seq = m
 
