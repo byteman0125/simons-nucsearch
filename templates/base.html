@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simons Nucleotide Search</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    header { margin-bottom: 20px; }
+    .container { max-width: 1000px; margin: auto; }
+    .error { color: #b00020; }
+    .match { background: #fffbcc; }
+    .ctx { color: #666; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background: #f4f4f4; }
+    nav.pagination a, nav.pagination span { margin-right: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Simons Nucleotide Search</h1>
+      <p>EFetch: db=nucleotide, id=30271926, rettype=fasta, retmode=xml</p>
+    </header>
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

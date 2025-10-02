@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+  <form method="get" action="/">
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+  </form>
+
+  {% if error %}
+    <p class="error">Error: {{ error }}</p>
+  {% endif %}
+
+  {% if pattern %}
+    <h2>Results for pattern: <code>{{ pattern }}</code></h2>
+    <p>Sequence length: {{ sequence_len }} bp. Showing {{ page_obj.paginator.count }} match(es).
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Index</th>
+          <th>Context</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in page_obj.object_list %}
+          <tr>
+            <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+            <td>{{ item.index }}</td>
+            <td class="ctx">
+              <span class="ctx">{{ item.left }}</span><span class="match">{{ item.match }}</span><span class="ctx">{{ item.right }}</span>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3">No matches found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <nav class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?pattern={{ pattern }}&page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?pattern={{ pattern }}&page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% endblock %}
