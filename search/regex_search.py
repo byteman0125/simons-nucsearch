@@ -20,18 +20,23 @@ def stream_regex_matches_over_sequence_chunks(chunks: Iterable[str], pattern: st
     regex = re.compile(pattern)
     buffer = ''
     offset = 0
+    last_match_end = 0
+    
     for chunk in chunks:
         window = buffer + chunk
-        start_pos = 0
+        buffer_len = len(buffer)
+        
         for m in regex.finditer(window):
-            yield offset + m.start(), m.group(0)
+            abs_pos = offset + m.start()
+            # Only yield if this match hasn't been reported yet
+            if abs_pos >= last_match_end:
+                yield abs_pos, m.group(0)
+                last_match_end = abs_pos + len(m.group(0))
+        
         # prepare buffer for next chunk
-        if overlap > 0:
+        if overlap > 0 and len(window) > overlap:
             buffer = window[-overlap:]
+            offset += len(window) - overlap
         else:
             buffer = ''
-        offset += len(window) - len(buffer)
-    # final scan of remaining buffer (no new offset advance)
-    if buffer:
-        for m in regex.finditer(buffer):
-            yield offset + m.start(), m.group(0)
+            offset += len(window)

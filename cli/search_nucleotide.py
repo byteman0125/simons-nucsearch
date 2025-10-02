@@ -2,7 +2,13 @@
 from __future__ import annotations
 import argparse
 import sys
+import os
+from pathlib import Path
 from typing import Iterable
+
+# Add parent directory to path to import search module
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from search.efetch import fetch_fasta_text
 from search.regex_search import stream_sequence_from_fasta_lines, stream_regex_matches_over_sequence_chunks
 
