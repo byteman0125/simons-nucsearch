@@ -4,7 +4,7 @@ from typing import Iterable, Iterator, Tuple
 
 
 def iter_regex_matches(seq: str, pattern: str) -> Iterator[Tuple[int, str]]:
-    regex = re.compile(pattern)
+    regex = re.compile(pattern, re.IGNORECASE)
     for m in regex.finditer(seq):
         yield m.start(), m.group(0)
 
@@ -17,7 +17,7 @@ def stream_sequence_from_fasta_lines(lines: Iterable[str]) -> Iterator[str]:
 
 
 def stream_regex_matches_over_sequence_chunks(chunks: Iterable[str], pattern: str, overlap: int = 100) -> Iterator[Tuple[int, str]]:
-    regex = re.compile(pattern)
+    regex = re.compile(pattern, re.IGNORECASE)
     buffer = ''
     offset = 0
     last_match_end = 0
